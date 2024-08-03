@@ -1,0 +1,40 @@
+have set of all states,
+have terminal states
+have set of all actions
+create state-actions cross product (stores value function and count, or seperate)
+
+initialise policy to be random 
+
+discount_factor = 0.8
+
+simulate episode using current policy:
+    Gt=0
+    t=1
+    1. start in random non-terminal state
+    while (state not terminal):
+        sample from pi(action | s)
+        take action
+        record reward Rt+1
+        Gt = Rt+1 + df*Gt
+        add ((St,At),Gt, Rt+1) to episode
+        t+=1
+        
+episode: (((S1, A1), R2), ((S2, A2), R3), ((S3 A3), R4),...((ST, AT), RT+1))
+
+for each episode:
+    for each state-action pair: 
+        update count
+        update state-value function:
+            Q(s,a) = Q(s,a) + 1/N(s,a) * (Gt-Q(s,a))
+
+policy extraction:
+    epsilon = 1/k
+    for every state:
+        max_action = argmax(Q(s,a))
+        for every action:
+            if action != max_action:
+                pi(action | s) = epsilon / number of actions
+            else:
+                pi (action | s) = (1-epsilon) + epsilon/ number of actions
+
+    
